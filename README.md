@@ -33,6 +33,8 @@ npm run start:dev
 
 ## Running tests
 
+> Requires `npm install` to have been run first.
+
 ```bash
 # Unit tests
 npm run test
@@ -40,7 +42,7 @@ npm run test
 # Unit tests with coverage
 npm run test:cov
 
-# E2E tests (requires a running database)
+# E2E tests (requires a running Postgres on localhost:5432)
 npm run test:e2e
 ```
 

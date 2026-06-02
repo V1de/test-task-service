@@ -6,13 +6,32 @@ Full interactive docs: `http://localhost:3000/api` (Swagger UI)
 All error responses follow the shape:
 ```json
 {
-  "statusCode": 400,
-  "timestamp": "2026-06-01T12:00:00.000Z",
-  "path": "/auth/login",
+  "code": "INTERNAL_ERROR",
+  "message": "Human-readable error description",
   "correlationId": "uuid-v4",
-  "error": { "message": "..." }
+  "timestamp": "2026-06-01T12:00:00.000Z"
 }
 ```
+
+The HTTP status code communicates the error category (e.g. 400, 401, 404, 409, 500), while the code field provides a stable machine-readable identifier for client-side handling and monitoring.
+
+correlationId is generated per request and included in both logs and API responses to simplify tracing and debugging across system boundaries.
+
+Alternative considered: wrapping errors in an additional error object:
+
+```json
+{
+  "error": {
+    "code": "INTERNAL_ERROR",
+    "message": "...",
+    "correlationId": "...",
+    "timestamp": "..."
+  }
+}
+```
+
+
+This approach can improve consistency when successful responses are also wrapped (e.g. { "data": ... }), but was not adopted to keep the API response shape simple for this MVP.
 
 ---
 
@@ -39,6 +58,7 @@ Content-Type: application/json
 ```json
 {
   "accessToken": "<jwt>",
+  "refreshToken": "<token>",
   "userId": "uuid",
   "brandId": "brandA"
 }
@@ -64,6 +84,7 @@ Content-Type: application/json
 ```json
 {
   "accessToken": "<jwt>",
+  "refreshToken": "<token>",
   "userId": "uuid",
   "brandId": "brandA"
 }
